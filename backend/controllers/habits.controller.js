@@ -1,11 +1,12 @@
 const Habit = require("../models/habit");
+const HabitActivity = require("../models/habitActivity");
 
 const createHabit = async (req, res) => {
   const { title, description, category, frequency } = req.body;
   try {
     if (!title || !category) {
       return res.status(400).json({
-        message: "Title and description are required",
+        message: "Title and category are required",
       });
     }
 
@@ -33,7 +34,7 @@ const getHabits = async (req, res) => {
 
     res.status(200).json({
       message: "Habits fetched successfully",
-      habits: habits,
+      habits,
     });
   } catch (error) {
     return res.status(500).json({
@@ -44,7 +45,13 @@ const getHabits = async (req, res) => {
 
 const editHabit = async (req, res) => {
   const { id } = req.params;
-  const updatedHabit = req.body;
+  const { title, description, category, frequency } = req.body;
+  const updatedHabit = {
+    title,
+    description,
+    category,
+    frequency,
+  };
 
   try {
     const habit = await Habit.findByIdAndUpdate(id, updatedHabit, {
@@ -53,12 +60,12 @@ const editHabit = async (req, res) => {
     });
 
     if (!habit) {
-      return res.status(400).json({ message: "Unable to find Habit" });
+      return res.status(404).json({ message: "Unable to find Habit" });
     }
 
     res.status(200).json({
       message: "Habit edited successfully",
-      habit: habit,
+      habit,
     });
   } catch (error) {
     return res.status(500).json({
@@ -74,12 +81,12 @@ const deleteHabit = async (req, res) => {
     const habit = await Habit.findByIdAndDelete(id);
 
     if (!habit) {
-      return res.status(400).json({ message: "Unable to delete Habit" });
+      return res.status(404).json({ message: "Unable to delete Habit" });
     }
 
     res.status(200).json({
       message: "Habit deleted successfully",
-      habit: habit,
+      habit,
     });
   } catch (error) {
     return res.status(500).json({
@@ -88,4 +95,36 @@ const deleteHabit = async (req, res) => {
   }
 };
 
-module.exports = { createHabit, getHabits, editHabit, deleteHabit };
+const markComplete = async (req, res) => {
+  const { id } = req.params;
+  const dateToday = new Date().toISOString().split("T")[0];
+
+  try {
+    const habitActivity = await HabitActivity.create({
+      habitId: id,
+      date: dateToday,
+    });
+
+    return res.status(201).json({
+      message: "Habit Activity created",
+      habitActivity,
+    });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(200).json({
+        message: "Habit already marked as completed for today",
+      });
+    }
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+module.exports = {
+  createHabit,
+  getHabits,
+  editHabit,
+  deleteHabit,
+  markComplete,
+};
