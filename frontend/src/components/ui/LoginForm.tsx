@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 const LoginForm = () => {
+
+  const navigate = useNavigate()
   return (
     <form className="flex flex-col gap-5">
       {/* Email */}
@@ -23,6 +27,7 @@ const LoginForm = () => {
 
       {/* Button */}
       <button
+      onClick={()=>(navigate('/dashboard'))}
         type="submit"
         className="bg-emerald-600 text-white py-2 rounded-lg text-sm hover:bg-emerald-700 transition"
       >
