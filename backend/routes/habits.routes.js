@@ -8,14 +8,16 @@ const {
 } = require("../controllers/habits.controller");
 const router = express.Router();
 
-router.post("/", createHabit);
+const protect = require("../middlewares/protect.middleware");
 
-router.get("/", getHabits);
+router.post("/", protect, createHabit);
 
-router.patch("/:id", editHabit);
+router.get("/", protect, getHabits);
 
-router.delete("/:id", deleteHabit);
+router.patch("/:id", protect, editHabit);
 
-router.post("/:id/complete", markComplete)
+router.delete("/:id", protect, deleteHabit);
+
+router.post("/:id/complete", protect, markComplete);
 
 module.exports = router;
