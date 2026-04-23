@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import LoginModal from "../components/ui/LoginModal";
-import Navbar from "../components/ui/Navbar";
+import Navbar from "../components/layout/Navbar";
 import HabitCard from "../components/ui/HabitCard";
 
 const HomePage = () => {
@@ -16,7 +16,7 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-emerald-50">
-      <Navbar onLogin={handleLoginModal}/>
+      <Navbar onLogin={handleLoginModal} />
       <div className="h-screen w-full px-8 py-4 grid grid-cols-2 items-center justify-between gap-6">
         <div className="max-w-xl space-y-6">
           <h1 className="text-5xl font-bold text-zinc-900">

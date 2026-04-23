@@ -5,7 +5,6 @@ const cors = require("cors");
 
 const habitRoutes = require("../routes/habits.routes");
 const authRoutes = require("../routes/auth.routes");
-const dashboardRoute = require("../routes/dashboard.route");
 
 const app = express();
 app.use(
@@ -25,6 +24,6 @@ app.use("/api/habits", habitRoutes);
 
 app.use("/api/auth", authRoutes);
 
-app.use("/api/dashboard", dashboardRoute);
+
 
 module.exports = app;

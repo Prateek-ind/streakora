@@ -1,10 +1,17 @@
-import LoginForm from "./LoginForm";
+import { useState } from "react";
+import LoginForm from "../layout/LoginForm";
+import RegisterForm from "../layout/RegisterForm";
 
 type Props = {
   onClose: () => void;
 };
 
 const LoginModal = ({ onClose }: Props) => {
+  const [mode, setMode] = useState("login");
+
+  const toggleMode = () => {
+    setMode(mode === "login" ? "register" : "login");
+  };
   return (
     <div
       onClick={onClose}
@@ -16,7 +23,9 @@ const LoginModal = ({ onClose }: Props) => {
       >
         {/* Header */}
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-zinc-900">Welcome back</h2>
+          <h2 className="text-lg font-semibold text-zinc-900">
+            {mode === "login" ? "Welcome back" : "Welcome"}
+          </h2>
           <button
             onClick={onClose}
             className="text-zinc-500 hover:text-zinc-800 transition"
@@ -26,7 +35,30 @@ const LoginModal = ({ onClose }: Props) => {
         </div>
 
         {/* Form */}
-        <LoginForm />
+        {mode === "login" ? <LoginForm /> : <RegisterForm />}
+        {mode === "login" ? (
+          <p>
+            If you are not registered please{" "}
+            <span
+              onClick={toggleMode}
+              className="text-emerald-500 underline cursor-pointer"
+            >
+              sign-up{" "}
+            </span>
+            here.
+          </p>
+        ) : (
+          <p>
+            If you are registered please{" "}
+            <span
+              onClick={toggleMode}
+              className="text-emerald-500 underline cursor-pointer"
+            >
+              sign-in{" "}
+            </span>
+            here.
+          </p>
+        )}
       </div>
     </div>
   );
