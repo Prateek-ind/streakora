@@ -1,22 +1,11 @@
 import React, { useState } from "react";
 import LoginModal from "../components/ui/LoginModal";
-import Navbar from "../components/layout/Navbar";
+import Navbar from "../components/shared/Navbar";
 import HabitCard from "../components/ui/HabitCard";
 
 const HomePage = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleCloseModal = () => {
-    setIsOpen(false);
-  };
-
-  const handleLoginModal = () => {
-    setIsOpen(true);
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-emerald-50">
-      <Navbar onLogin={handleLoginModal} />
       <div className="h-screen w-full px-8 py-4 grid grid-cols-2 items-center justify-between gap-6">
         <div className="max-w-xl space-y-6">
           <h1 className="text-5xl font-bold text-zinc-900">
@@ -28,10 +17,7 @@ const HomePage = () => {
             actually last.
           </p>
 
-          <button
-            onClick={handleLoginModal}
-            className="bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition"
-          >
+          <button className="bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition">
             Get Started
           </button>
         </div>
@@ -41,7 +27,6 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      {isOpen && <LoginModal onClose={handleCloseModal} />}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-const DashboardMenu = () => {
+const Sidebar = () => {
   const menuItems = [
     "Dashboard",
     "Habits",
@@ -31,4 +31,4 @@ const DashboardMenu = () => {
   );
 };
 
-export default DashboardMenu;
+export default Sidebar;

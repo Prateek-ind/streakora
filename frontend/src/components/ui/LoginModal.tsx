@@ -1,6 +1,6 @@
 import { useState } from "react";
-import LoginForm from "../layout/LoginForm";
-import RegisterForm from "../layout/RegisterForm";
+import LoginForm from "../shared/LoginForm";
+import RegisterForm from "../shared/RegisterForm";
 
 type Props = {
   onClose: () => void;

@@ -7,19 +7,28 @@ import HomePage from "./pages/HomePage.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import ProtectedRoute from "./components/shared/ProtectedRoute.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
+import MainLayout from "./components/layout/MainLayout.tsx";
+import DashboardLayout from "./components/layout/DashboardLayout.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <MainLayout />,
+    children: [{ path: "/", element: <HomePage /> }],
   },
   {
-    path: "/dashboard",
+    path: "dashboard",
     element: (
       <ProtectedRoute>
-        <Dashboard />
+        <DashboardLayout />
       </ProtectedRoute>
     ),
+    children: [
+      {
+        index:true,
+        element: <Dashboard />,
+      },
+    ],
   },
 ]);
 
