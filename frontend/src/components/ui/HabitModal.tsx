@@ -12,7 +12,7 @@ const HabitModal = ({ onClose }: Props) => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white max-w-3xl rounded-2xl p-6 space-y-5 border border-zinc-200 shadow-lg"
+        className="bg-white w-[400px] max-w-3xl rounded-2xl p-6 space-y-5 border border-zinc-200 shadow-lg"
       >
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-zinc-800">

@@ -4,6 +4,7 @@ import DashboardNavbar from "../shared/DashboardNavbar";
 import Sidebar from "../ui/Sidebar";
 import StatsCard from "../ui/StatsCard";
 import Topbar from "../ui/TopBar";
+import Todayhabit from "../ui/Todayhabit";
 
 const DashboardLayout = () => {
   return (
@@ -14,8 +15,14 @@ const DashboardLayout = () => {
         <main className="p-6">
           <Topbar />
           <StatsCard />
+
           <hr className="my-4" />
-          <Outlet />
+          <div className="grid grid-cols-3">
+            <div className="col-span-2">
+              <Todayhabit />
+            </div>
+            <div></div>
+          </div>
         </main>
       </div>
     </div>
