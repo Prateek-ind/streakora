@@ -47,3 +47,23 @@ export const getHabits = async(): Promise<Habit[]>=>{
         throw new Error("Something went wrong");
     }
 }
+
+export const markHabitComplete = async(id: string)=>{
+    try{
+        const res = await fetch(`${BASE_URL}/api/habits/${id}/complete`, {
+            method: "PATCH",
+            credentials: "include"
+        })
+
+        if(!res.ok){
+            throw new Error("Failed to mark complete ")
+        }
+        const data = await res.json()
+        return data
+    }catch(error: unknown) {
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error("Something went wrong");
+    }
+}

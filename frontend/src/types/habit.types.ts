@@ -4,11 +4,12 @@ export interface Habit {
     description: string,
     frequency: string,
     category: string,
+    isCompletedToday: boolean,
 }
 
 export type CreateHabitInput = {
   title: string;
   description?: string;
-  frequency: "daily" | "weekly";
-  category: "health"| "work"| "personal"| "learning"
+  frequency: "daily" | "weekly" | "";
+  category: "health"| "work"| "personal"| "learning" | ""
 };

@@ -30,4 +30,4 @@ const habitSchema = new mongoose.Schema(
 
 const habitModel = mongoose.model("Habit", habitSchema);
 
-module.exports = habitModel
+module.exports = habitModel;

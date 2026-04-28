@@ -1,41 +1,74 @@
 import { createHabit } from "@/api/habit";
 import { queryClient } from "@/lib/queryClient";
 import { CreateHabitInput } from "@/types/habit.types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { ChangeEvent, useState } from "react";
 
-const HabitForm = () => {
+type Props = {
+  onCloseModal: () => void;
+};
+
+const HabitForm = ({ onCloseModal }: Props) => {
   const [formData, setFormData] = useState<CreateHabitInput>({
     title: "",
     description: "",
     frequency: "",
     category: "",
   });
+  const queryClient = useQueryClient();
+
   const mutation = useMutation({
     mutationFn: createHabit,
+
+    onMutate: async (newHabit) => {
+      await queryClient.cancelQueries({ queryKey: ["habits"] });
+
+      const prev = queryClient.getQueryData(["habits"]);
+
+      const oldOptimisticHabit = {
+        ...newHabit,
+        _id: Math.random().toString(),
+        isCompletedToday: false,
+      };
+
+      queryClient.setQueryData(["habits"], (old: any) => [
+        oldOptimisticHabit,
+        ...old,
+      ]);
+
+      return { prev };
+    },
+
+    onError: (err, newHabit, context) => {
+      queryClient.setQueryData(["habits"], context?.prev);
+    },
+
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["habits"] })
-      console.log("form submitted")
+      queryClient.invalidateQueries({ queryKey: ["habits"] });
+      console.log("form submitted");
     },
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async(e: React.FormEvent)=>{
-    e.preventDefault()
-    console.log(formData)
-     mutation.mutate(formData)
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(formData);
+    mutation.mutate(formData);
+    onCloseModal();
+  };
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
       <div className="flex flex-col gap-1">
         <label className="text-sm text-zinc-600">Title: </label>
         <input
-        onChange={handleChange}
+          onChange={handleChange}
           type="text"
           name="title"
           placeholder="Title"
@@ -45,7 +78,7 @@ const HabitForm = () => {
       <div className="flex flex-col gap-1">
         <label className="text-sm text-zinc-600">Description: </label>
         <textarea
-        onChange={handleChange}
+          onChange={handleChange}
           name="description"
           placeholder="Description"
           className="border border-zinc-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"

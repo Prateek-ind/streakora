@@ -26,7 +26,7 @@ const HabitModal = ({ onClose }: Props) => {
             ✕
           </button>
         </div>
-        <HabitForm/>
+        <HabitForm onCloseModal = {onClose}/>
       </div>
     </div>
   );

@@ -18,6 +18,6 @@ router.patch("/:id", protect, editHabit);
 
 router.delete("/:id", protect, deleteHabit);
 
-router.post("/:id/complete", protect, markComplete);
+router.patch("/:id/complete", protect, markComplete);
 
 module.exports = router;

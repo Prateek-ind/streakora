@@ -30,11 +30,24 @@ const createHabit = async (req, res) => {
 
 const getHabits = async (req, res) => {
   try {
+    const today = new Date().toLocaleDateString("en-CA");
+
     const habits = await Habit.find().sort({ createdAt: -1 });
+
+    const activities = await HabitActivity.find({ date: today });
+
+    const completedSet = new Set(
+      activities.map((activity) => activity.habitId.toString()),
+    );
+
+    const result = habits.map((h) => ({
+      ...h.toObject(),
+      isCompletedToday: completedSet.has(h._id.toString()),
+    }));
 
     res.status(200).json({
       message: "Habits fetched successfully",
-      habits,
+      habits: result,
     });
   } catch (error) {
     return res.status(500).json({
@@ -97,12 +110,17 @@ const deleteHabit = async (req, res) => {
 
 const markComplete = async (req, res) => {
   const { id } = req.params;
-  const dateToday = new Date().toISOString().split("T")[0];
+  const today = new Date().toLocaleDateString("en-CA");
 
   try {
+    const habit = Habit.findById(id);
+    if (!habit) {
+      return res.status(404).json({ message: "Habit not found" });
+    }
+
     const habitActivity = await HabitActivity.create({
       habitId: id,
-      date: dateToday,
+      date: today,
     });
 
     return res.status(201).json({
