@@ -32,12 +32,15 @@ const HabitItem = ({ habitData }: Props) => {
       queryClient.setQueryData(["habits"], context?.prev);
     },
 
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["habits"] }),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["habits"] });
+      queryClient.invalidateQueries({ queryKey: ["weekly-stats"] });
+    },
   });
 
   const handleMarkHabitComplete = async (e: React.FormEvent) => {
     e.preventDefault();
-    await mutation.mutate();
+    mutation.mutate();
   };
 
   return (

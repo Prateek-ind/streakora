@@ -5,6 +5,7 @@ const {
   editHabit,
   deleteHabit,
   markComplete,
+  getWeeklyStats,
 } = require("../controllers/habits.controller");
 const router = express.Router();
 
@@ -19,5 +20,7 @@ router.patch("/:id", protect, editHabit);
 router.delete("/:id", protect, deleteHabit);
 
 router.patch("/:id/complete", protect, markComplete);
+
+router.get("/weekly-stats", protect, getWeeklyStats);
 
 module.exports = router;

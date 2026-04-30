@@ -113,7 +113,7 @@ const markComplete = async (req, res) => {
   const today = new Date().toLocaleDateString("en-CA");
 
   try {
-    const habit = Habit.findById(id);
+    const habit = await Habit.findById(id);
     if (!habit) {
       return res.status(404).json({ message: "Habit not found" });
     }
@@ -139,10 +139,56 @@ const markComplete = async (req, res) => {
   }
 };
 
+const getWeeklyStats = async (req, res) => {
+  try {
+    const today = new Date();
+
+    const last7Days = [];
+
+    for (let i = 6; i >= 0; i--) {
+      let d = new Date();
+      d.setDate(today.getDate() - i);
+      last7Days.push(d.toLocaleDateString("en-CA"));
+    }
+
+    const activities = await HabitActivity.find({ date: { $in: last7Days } });
+
+    const countMap = {};
+
+    last7Days.forEach((day) => {
+      countMap[day] = 0;
+    });
+
+    activities.forEach((a) => {
+      countMap[a.date]++;
+    });
+
+    const result = last7Days.map((day) => {
+      const dayName = new Date(day).toLocaleDateString("en-CA", {
+        weekday: "short",
+      });
+      return {
+        day: dayName,
+        count: countMap[day],
+      };
+    });
+
+    res.status(200).json({
+      message: "weekly stats",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Fetching weekly stats failed",
+    });
+  }
+};
+
 module.exports = {
   createHabit,
   getHabits,
   editHabit,
   deleteHabit,
   markComplete,
+  getWeeklyStats,
 };

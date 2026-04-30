@@ -67,3 +67,21 @@ export const markHabitComplete = async(id: string)=>{
         throw new Error("Something went wrong");
     }
 }
+
+export const getWeeklyStats = async()=>{
+    try {
+        const res = await fetch(`${BASE_URL}/api/habits/weekly-stats`, {
+            credentials: "include"
+        })
+
+        if(!res.ok){
+            throw new Error("Unable to fetch weekly stats")
+        }
+        const data = await res.json()
+        return data
+    } catch (error: unknown) {
+        if(error instanceof Error)
+        {throw new Error(error.message)}
+        throw new Error("Something went wrong")
+    }
+}

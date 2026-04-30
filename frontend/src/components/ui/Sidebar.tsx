@@ -8,7 +8,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-64 h-screen border-r border-zinc-200 bg-white p-5 flex flex-col">
+    <aside className="w-48 max-w-64 h-screen border-r border-zinc-200 bg-white p-5 flex flex-col">
       
       {/* Logo */}
       <h1 className="text-xl font-semibold text-emerald-600 mb-8">

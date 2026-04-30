@@ -5,6 +5,7 @@ import Sidebar from "../ui/Sidebar";
 import StatsCard from "../ui/StatsCard";
 import Topbar from "../ui/TopBar";
 import Todayhabit from "../ui/Todayhabit";
+import WeeklyStatsGraph from "../ui/WeeklyStatsGraph";
 
 const DashboardLayout = () => {
   return (
@@ -17,11 +18,13 @@ const DashboardLayout = () => {
           <StatsCard />
 
           <hr className="my-4" />
-          <div className="grid grid-cols-3">
-            <div className="col-span-2">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-2">
               <Todayhabit />
             </div>
-            <div></div>
+            <div>
+              <WeeklyStatsGraph/>
+            </div>
           </div>
         </main>
       </div>
