@@ -45,11 +45,11 @@ const HabitItem = ({ habitData }: Props) => {
 
   return (
     <div className="flex items-center justify-between gap-4 p-4 border border-zinc-200 rounded-xl my-2">
-      <div>
+      <div className="space-y-2">
         <h2 className="text-xl text-zinc-800">{habitData.title}</h2>
         <p className="text-sm text-zinc-500">{habitData?.description}</p>
-        <p className="text-xs text-zinc-500">{habitData.category}</p>
-        <p className="text-xs text-zinc-500">{habitData.frequency}</p>
+        <p className="text-xs text-zinc-500"><span className="text-zinc-700">Category:</span> {habitData.category}</p>
+        <p className="text-xs text-zinc-500"><span className="text-zinc-700">Frequency:</span> {habitData.frequency}</p>
       </div>
       <button
         onClick={handleMarkHabitComplete}
