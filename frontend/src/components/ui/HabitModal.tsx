@@ -15,9 +15,7 @@ const HabitModal = ({ onClose }: Props) => {
         className="bg-white w-[400px] max-w-3xl rounded-2xl p-6 space-y-5 border border-zinc-200 shadow-lg"
       >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-zinc-800">
-            Create Habit
-          </h2>
+          <h2 className="text-lg font-semibold text-zinc-800">Create Habit</h2>
 
           <button
             onClick={onClose}
@@ -26,7 +24,7 @@ const HabitModal = ({ onClose }: Props) => {
             ✕
           </button>
         </div>
-        <HabitForm onCloseModal = {onClose}/>
+        <HabitForm onCloseModal={onClose} />
       </div>
     </div>
   );

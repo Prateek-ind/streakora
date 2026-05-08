@@ -13,7 +13,7 @@ const DashboardLayout = () => {
       <Sidebar />
       <div className="flex-1">
         <DashboardNavbar />
-        <main className="p-6">
+        <main className="p-6 ml-48">
           <Topbar />
           <StatsCard />
 

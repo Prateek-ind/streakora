@@ -1,6 +1,7 @@
 import { markHabitComplete } from "@/api/habit";
 import { Habit } from "@/types/habit.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import HabitProgressBar from "../shared/HabitProgressBar";
 
 type Props = {
   habitData: Habit;
@@ -15,15 +16,15 @@ const HabitItem = ({ habitData }: Props) => {
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ["habits"] });
 
-      const prev = queryClient.getQueryData(["habits"]);
-
-      queryClient.setQueryData(["habits"], (old: any) =>
-        old.map((habit: any) =>
+      const prev = queryClient.getQueryData<Habit[]>(["habits"]);
+      queryClient.setQueryData(["habits"], (old: any) => {
+        const res = old.habits.map((habit: Habit) =>
           habit._id === habitData._id
             ? { ...habit, isCompletedToday: true }
             : habit,
-        ),
-      );
+        );
+        return res
+      });
 
       return { prev };
     },
@@ -48,22 +49,30 @@ const HabitItem = ({ habitData }: Props) => {
       <div className="space-y-2">
         <h2 className="text-xl text-zinc-800">{habitData.title}</h2>
         <p className="text-sm text-zinc-500">{habitData?.description}</p>
-        <p className="text-xs text-zinc-500"><span className="text-zinc-700">Category:</span> {habitData.category}</p>
-        <p className="text-xs text-zinc-500"><span className="text-zinc-700">Frequency:</span> {habitData.frequency}</p>
+        <p className="text-xs text-zinc-500">
+          <span className="text-zinc-700">Category:</span> {habitData.category}
+        </p>
+        <p className="text-xs text-zinc-500">
+          <span className="text-zinc-700">Frequency:</span>{" "}
+          {habitData.frequency}
+        </p>
       </div>
-      <button
-        onClick={handleMarkHabitComplete}
-        disabled={habitData.isCompletedToday || mutation.isPending}
-        className={`px-3 py-1 rounded transition text-sm
-         ${habitData.isCompletedToday ? "bg-emerald-500 text-white" : "bg-zinc-200 hover:bg-zinc-300"}
+      <div className="flex flex-col items-centern gap-4">
+        <HabitProgressBar habitData={habitData as Habit} />
+        <button
+          onClick={handleMarkHabitComplete}
+          disabled={habitData.isCompletedToday || mutation.isPending}
+          className={`px-3 py-1 rounded transition text-sm
+         ${habitData.isCompletedToday ? "bg-emerald-700 text-white" : "bg-zinc-200 hover:bg-zinc-300"}
          `}
-      >
-        {habitData.isCompletedToday
-          ? "Done"
-          : mutation.isPending
-            ? "Marking"
-            : "Mark Complete"}
-      </button>
+        >
+          {habitData.isCompletedToday
+            ? "Done"
+            : mutation.isPending
+              ? "Marking"
+              : "Mark Complete"}
+        </button>
+      </div>
     </div>
   );
 };

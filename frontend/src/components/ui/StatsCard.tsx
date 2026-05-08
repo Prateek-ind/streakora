@@ -12,11 +12,12 @@ const StatsCard = () => {
     queryKey: ["weekly-stats"],
     queryFn: getWeeklyStats,
   });
+  console.log(data, weekly)
 
-  const habits = data || [];
+  const habits = data?.habits || [];
   const weekData = weekly?.data || [];
 
-  const totalHabits = habits.length;
+  const totalHabits = habits.length
   const completedToday = habits.filter((h) => h.isCompletedToday).length;
   const completionRate =
     totalHabits === 0 ? 0 : Math.round((completedToday / totalHabits) * 100);
@@ -45,7 +46,7 @@ const StatsCard = () => {
   ];
 
   return (
-    <div className="w-fit  grid grid-cols-4 gap-4 ">
+    <div className="w-fit  grid grid-cols-4 gap-4 overflow-y-auto">
       {stats.map((stat, i) => {
         const Icon = stat.icon;
 

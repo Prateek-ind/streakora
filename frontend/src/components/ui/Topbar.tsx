@@ -13,7 +13,7 @@ const Topbar = () => {
 
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm"
+          className="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-sm"
         >
           + Add New Habit
         </button>

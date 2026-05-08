@@ -106,7 +106,7 @@ const HabitForm = ({ onCloseModal }: Props) => {
           <option value="learning">Learning</option>
         </select>
       </div>
-      <button className="bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm">
+      <button className="bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm">
         Add
       </button>
     </form>

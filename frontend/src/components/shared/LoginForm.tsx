@@ -29,6 +29,7 @@ const LoginForm = () => {
 
       if (!res.ok) {
         setError("Failed to login, check credentials");
+        setIsLoading(false)
       }
       loginUser(res.user);
       navigate("/dashboard");
@@ -36,6 +37,7 @@ const LoginForm = () => {
       setIsLoading(false);
     } catch (error: any) {
       setError(error.message);
+      setIsLoading(false)
       throw new Error(error.message);
     }
   };
@@ -73,7 +75,7 @@ const LoginForm = () => {
       <button
         type="submit"
         disabled={isLoading}
-        className="bg-emerald-600 text-white py-2 rounded-lg text-sm hover:bg-emerald-700 transition"
+        className="bg-emerald-700 text-white py-2 rounded-lg text-sm hover:bg-emerald-800 transition"
       >
         {isLoading ? "Submitting" : "Login"}
       </button>

@@ -10,16 +10,17 @@ const Todayhabit = () => {
     queryFn: getHabits,
   });
 
+  const habits = data?.habits || []
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Something went wrong</p>;
-
+  console.log(habits)
   return (
     <div className="">
       <div className="flex items-center gap-4 mb-4">
         <h2 className="font-bold text-lg text-zinc-900">Today's Habits</h2>
-        <p className="text-sm text-zinc-500">({data?.length} Habits)</p>
+        <p className="text-sm text-zinc-500">({habits?.length} Habits)</p>
       </div>
-      {(data ?? []).map((habit: Habit) => (
+      {habits.map((habit: Habit) => (
         <HabitItem key={habit._id} habitData={habit} />
       ))}
     </div>

@@ -5,6 +5,7 @@ export interface Habit {
     frequency: string,
     category: string,
     isCompletedToday: boolean,
+    weeklyCount: number
 }
 
 export type CreateHabitInput = {

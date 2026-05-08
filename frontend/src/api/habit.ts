@@ -2,6 +2,11 @@ import { CreateHabitInput, Habit } from "@/types/habit.types";
 
 const BASE_URL = "http://localhost:3000"
 
+type GetHabitResponse = {
+    habits: Habit[] ,
+    weekLength: number
+}
+
 export const createHabit = async(habitData: CreateHabitInput)=>{
     try{
         const res = await fetch(`${BASE_URL}/api/habits`, {
@@ -26,7 +31,7 @@ export const createHabit = async(habitData: CreateHabitInput)=>{
     }
 }
 
-export const getHabits = async(): Promise<Habit[]>=>{
+export const getHabits = async(): Promise<GetHabitResponse>=>{
     try
     {
         const res = await fetch(`${BASE_URL}/api/habits`, {
@@ -38,7 +43,7 @@ export const getHabits = async(): Promise<Habit[]>=>{
             throw new Error("Failed to get habit")
         }
         const data= await res.json()
-        return data.habits
+        return data
       
     }catch(error: unknown) {
         if (error instanceof Error) {
@@ -59,6 +64,7 @@ export const markHabitComplete = async(id: string)=>{
             throw new Error("Failed to mark complete ")
         }
         const data = await res.json()
+        console.log(data)
         return data
     }catch(error: unknown) {
         if (error instanceof Error) {

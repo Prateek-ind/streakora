@@ -30,24 +30,56 @@ const createHabit = async (req, res) => {
 
 const getHabits = async (req, res) => {
   try {
-    const today = new Date().toLocaleDateString("en-CA");
+    const today = new Date();
+    const todayDate = today.toISOString().split("T")[0];
+
+    const dayOFWeek = today.getDay();
+    const diff = dayOFWeek === 0 ? 6 : dayOFWeek - 1;
+
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - diff);
+
+    const currentWeekDates = [];
+
+    for (
+      let d = new Date(startOfWeek);
+      d <= today;
+      d.setDate(d.getDate() + 1)
+    ) {
+      currentWeekDates.push(d.toISOString().split("T")[0]);
+    }
 
     const habits = await Habit.find().sort({ createdAt: -1 });
 
-    const activities = await HabitActivity.find({ date: today });
+    const activities = await HabitActivity.find({
+      date: { $in: currentWeekDates },
+    });
+
+    const todayActivities = await HabitActivity.find({
+      date: { $in: todayDate },
+    });
 
     const completedSet = new Set(
-      activities.map((activity) => activity.habitId.toString()),
+      todayActivities.map((activity) => activity.habitId.toString()),
     );
+
+    const weeklyCountMap = {};
+
+    activities.forEach((a) => {
+      const id = a.habitId.toString();
+      weeklyCountMap[id] = (weeklyCountMap[id] || 0) + 1;
+    });
 
     const result = habits.map((h) => ({
       ...h.toObject(),
       isCompletedToday: completedSet.has(h._id.toString()),
+      weeklyCount: weeklyCountMap[h._id.toString() || 0],
     }));
 
     res.status(200).json({
       message: "Habits fetched successfully",
       habits: result,
+      weekLength: currentWeekDates.length,
     });
   } catch (error) {
     return res.status(500).json({
@@ -110,7 +142,7 @@ const deleteHabit = async (req, res) => {
 
 const markComplete = async (req, res) => {
   const { id } = req.params;
-  const today = new Date().toLocaleDateString("en-CA");
+  const today = new Date().toISOString().split("T")[0];
 
   try {
     const habit = await Habit.findById(id);
@@ -148,7 +180,7 @@ const getWeeklyStats = async (req, res) => {
     for (let i = 6; i >= 0; i--) {
       let d = new Date();
       d.setDate(today.getDate() - i);
-      last7Days.push(d.toLocaleDateString("en-CA"));
+      last7Days.push(d.toISOString().split("T")[0]);
     }
 
     const activities = await HabitActivity.find({ date: { $in: last7Days } });
